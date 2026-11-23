@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2021"
 license = "MIT"
 description = "Turn discovery notes and executive AI hype into a gap analysis, an architecture diagram and a scoped 4-week statement of work."
-repository = "https://github.com/braylo-ai/fde-11-sow-scoper"
+repository = "https://github.com/braylo777/fde-11-sow-scoper"
 
 [lib]
 crate-type = ["rlib", "cdylib"]
