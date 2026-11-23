@@ -1,0 +1,26 @@
+[package]
+name = "fde-11-sow-scoper"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Turn discovery notes and executive AI hype into a gap analysis, an architecture diagram and a scoped 4-week statement of work."
+repository = "https://github.com/braylo-ai/fde-11-sow-scoper"
+
+[lib]
+crate-type = ["rlib", "cdylib"]
+
+[[bin]]
+name = "fde-11-sow-scoper"
+path = "src/main.rs"
+
+[dependencies]
+serde = { version = "=1.0.229", features = ["derive"] }
+serde_json = "=1.0.154"
+sha2 = "=0.10.9"
+hmac = "=0.12.1"
+
+[profile.release]
+opt-level = "s"
+lto = true
+panic = "abort"
+codegen-units = 1
