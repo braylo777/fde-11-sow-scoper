@@ -4,6 +4,8 @@
 
 Turn a discovery workshop and executive 'AI hype' into a ranked gap analysis, an architecture diagram and a scoped 4-week statement of work with measurable acceptance criteria.
 
+**Also built as Project 11 of 12, "Automated Architecture Scoper",** from the companion [12 FDE projects post](https://x.com/suraj_sharma14/status/2125197762752806998).
+
 **Live demo:** https://fde-11-sow-scoper.braylo777.workers.dev — the Rust core runs in your browser as WebAssembly. No server, no tracking.
 
 ## Why this matters
@@ -17,6 +19,7 @@ Most failed AI projects were scoped badly, not built badly. The executive wants 
 - Ranking by value per engineer-day, blocked items last
 - Mermaid architecture diagram that adds a PII proxy and approval gate only when the data and writes need them
 - SOW in Markdown: objective, scope table, week-by-week plan, acceptance criteria, dependencies, out of scope, diagram
+- STRIDE threat model: threats derived from access type, data sensitivity, writes and system ownership; likelihood x impact risk, mitigation and a verification test per threat; included in the SOW as section 8
 
 ## What it does not do (yet)
 
@@ -34,6 +37,7 @@ Every operation takes JSON in and gives JSON out. The CLI, the tests and the dem
 | `gap_analysis` | Four candidate use cases ranked by value per engineer-day. Claims intake has the most volume but is red: the AS/400 has no API. |
 | `architecture_diagram` | Diagram for the two chosen use cases. The PII proxy appears because Zendesk holds customer data; the approval gate because invoice disputes write to SAP. |
 | `draft_sow` | Fits the best ready use cases into 25 engineer-days and writes the SOW. Lower engineer_days to see items move to out of scope. |
+| `threat_model` | STRIDE threats for the use cases the SOW selected, built from how each system is reached, how sensitive its data is and whether the agent writes. Each row has a risk score, a mitigation and the test that proves it. |
 
 ## Run it
 
@@ -80,7 +84,7 @@ web/              demo page; examples.json drives both the page and this README
 
 ## Part of a series
 
-This is one of 12 repos that work through a public Forward Deployed Engineering roadmap ([source post](https://x.com/suraj_sharma14/status/2124827808535048566)). All 12: [github.com/braylo777?q=fde-](https://github.com/braylo777?tab=repositories&q=fde-).
+This is one of 12 repos that work through a public Forward Deployed Engineering roadmap ([12 stages](https://x.com/suraj_sharma14/status/2124827808535048566), [12 projects](https://x.com/suraj_sharma14/status/2125197762752806998)). All 12: [github.com/braylo777?q=fde-](https://github.com/braylo777?tab=repositories&q=fde-).
 
 ## License
 

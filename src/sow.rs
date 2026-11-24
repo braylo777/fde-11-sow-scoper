@@ -111,9 +111,13 @@ pub fn draft_op(i: &Value) -> Result<Value, String> {
     md += "- Production rollout beyond the pilot team; model fine-tuning; changes to source systems.\n\n";
     md += "## 7. Architecture\n\n```mermaid\n";
     md += &arch::mermaid(&d, &names);
-    md += "```\n";
+    md += "```\n\n";
+    let threats = crate::threat::model(&d, &names);
+    md += &format!("## 8. Threat model (STRIDE)\n\n{} threats, {} high. Each mitigation ships with the test that proves it.\n\n",
+        threats.len(), threats.iter().filter(|t| t["level"] == "high").count());
+    md += &crate::threat::markdown(&threats);
     Ok(
-        json!({"sow_markdown": md, "selected": names, "engineer_days_used": used, "deferred": deferred}),
+        json!({"sow_markdown": md, "selected": names, "threats": threats.len(), "engineer_days_used": used, "deferred": deferred}),
     )
 }
 

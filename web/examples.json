@@ -9,7 +9,8 @@
     "Gap analysis: value (volume x minutes x automatable share x rate) vs. effort (integration by access type, writes, PII guardrails, golden-set work); readiness and blockers",
     "Ranking by value per engineer-day, blocked items last",
     "Mermaid architecture diagram that adds a PII proxy and approval gate only when the data and writes need them",
-    "SOW in Markdown: objective, scope table, week-by-week plan, acceptance criteria, dependencies, out of scope, diagram"
+    "SOW in Markdown: objective, scope table, week-by-week plan, acceptance criteria, dependencies, out of scope, diagram",
+    "STRIDE threat model: threats derived from access type, data sensitivity, writes and system ownership; likelihood x impact risk, mitigation and a verification test per threat; included in the SOW as section 8"
   ],
   "gaps": [
     "Effort constants are a starting heuristic; calibrate them with your own delivery history",
@@ -325,6 +326,111 @@
         "engineer_days": 25,
         "start_date": "2027-01-11"
       }
+    },
+    {
+      "op": "threat_model",
+      "label": "Threat model (STRIDE)",
+      "help": "STRIDE threats for the use cases the SOW selected, built from how each system is reached, how sensitive its data is and whether the agent writes. Each row has a risk score, a mitigation and the test that proves it.",
+      "input": {
+        "discovery": {
+          "customer": "Northwind Logistics",
+          "loaded_hourly_rate": 52,
+          "systems": [
+            {
+              "name": "Zendesk",
+              "access": "rest",
+              "sensitivity": "pii",
+              "owner": "CX Ops"
+            },
+            {
+              "name": "SAP ECC",
+              "access": "soap",
+              "sensitivity": "internal",
+              "owner": "Finance IT"
+            },
+            {
+              "name": "Carrier TMS",
+              "access": "db",
+              "sensitivity": "internal",
+              "owner": "Logistics IT"
+            },
+            {
+              "name": "SharePoint SOPs",
+              "access": "graphql",
+              "sensitivity": "internal",
+              "owner": ""
+            },
+            {
+              "name": "Legacy claims (AS/400)",
+              "access": "none",
+              "sensitivity": "pii",
+              "owner": "Claims"
+            }
+          ],
+          "use_cases": [
+            {
+              "name": "Where-is-my-shipment replies",
+              "sponsor": "VP Customer Experience",
+              "volume_per_month": 14000,
+              "minutes_per_task": 4,
+              "automatable_share": 0.7,
+              "systems": [
+                "Zendesk",
+                "Carrier TMS"
+              ],
+              "has_examples": true,
+              "success_metric": "≥60% of WISMO tickets resolved without an agent, CSAT not lower"
+            },
+            {
+              "name": "Invoice dispute triage",
+              "sponsor": "Controller",
+              "volume_per_month": 1800,
+              "minutes_per_task": 18,
+              "automatable_share": 0.5,
+              "systems": [
+                "SAP ECC",
+                "Zendesk"
+              ],
+              "writes": true,
+              "has_examples": false,
+              "success_metric": "Routing accuracy ≥90%; credit notes need approval"
+            },
+            {
+              "name": "SOP Q&A for warehouse leads",
+              "sponsor": "COO",
+              "volume_per_month": 2500,
+              "minutes_per_task": 6,
+              "automatable_share": 0.6,
+              "systems": [
+                "SharePoint SOPs"
+              ],
+              "has_examples": false,
+              "success_metric": "≥85% correct with citations on a 100-question eval"
+            },
+            {
+              "name": "Damage claims intake",
+              "sponsor": "Head of Claims",
+              "volume_per_month": 3000,
+              "minutes_per_task": 15,
+              "automatable_share": 0.5,
+              "systems": [
+                "Legacy claims (AS/400)"
+              ],
+              "writes": true,
+              "has_examples": true,
+              "success_metric": "Intake time −50%"
+            }
+          ]
+        },
+        "selected": [
+          "Where-is-my-shipment replies",
+          "SOP Q&A for warehouse leads"
+        ]
+      }
     }
-  ]
+  ],
+  "project": {
+    "n": 11,
+    "title": "Automated Architecture Scoper"
+  }
 }

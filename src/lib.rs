@@ -6,19 +6,22 @@
 //!   system, data sensitivity, write access, missing data; readiness and blockers.
 //! * `arch`  — a Mermaid architecture diagram for the selected use cases.
 //! * `sow`   — pick what fits a 4-week, N-engineer-day budget and write the SOW in Markdown:
-//!   weekly plan, deliverables, measurable acceptance criteria, out of scope, dependencies.
+//!   weekly plan, deliverables, measurable acceptance criteria, out of scope, dependencies,
+//!   architecture and threat model.
+//! * `threat` — STRIDE threat model with risk scores, mitigations and verification tests.
 
 mod api;
 pub mod arch;
 pub mod gap;
 pub mod hype;
 pub mod sow;
+pub mod threat;
 
 pub use api::dispatch;
 use serde::Deserialize;
 use serde_json::Value;
 
-pub const OPS: &[&str] = &["translate_hype", "gap_analysis", "architecture_diagram", "draft_sow"];
+pub const OPS: &[&str] = &["translate_hype", "gap_analysis", "architecture_diagram", "draft_sow", "threat_model"];
 
 #[derive(Debug, Clone, Deserialize)]
 pub struct System {
@@ -74,6 +77,7 @@ pub fn handle(op: &str, i: &Value) -> Result<Value, String> {
         "gap_analysis" => gap::analyze_op(i),
         "architecture_diagram" => arch::diagram_op(i),
         "draft_sow" => sow::draft_op(i),
+        "threat_model" => threat::threat_op(i),
         _ => Err(format!("unknown op `{op}`; known: {}", OPS.join(", "))),
     }
 }
